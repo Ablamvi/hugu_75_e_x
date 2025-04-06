@@ -1,90 +1,205 @@
-<!DOCTYPE html><html lang="fr">
+<!DOCTYPE html>
+<html lang="fr">
+
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>MediaSpace</title>
-  <link rel="stylesheet" href="style.css" />
-</head>
-<body>
-  <header>
-    <h1>MediaSpace</h1>
-    <nav>
-      <a href="#images">Images</a>
-      <a href="#videos">Vidéos</a>
-      <a href="#audios">Audios</a>
-      <a href="#documents">Documents</a>
-      <button id="toggle-theme">Mode Sombre</button>
-    </nav>
-  </header>  <main>
-    <section id="images">
-      <h2>Galerie d'Images</h2>
-      <div class="media-grid" id="image-gallery"></div>
-    </section><section id="videos">
-  <h2>Vidéos</h2>
-  <div class="media-grid" id="video-gallery"></div>
-</section>
-
-<section id="audios">
-  <h2>Audios</h2>
-  <div class="media-grid" id="audio-gallery"></div>
-</section>
-
-<section id="documents">
-  <h2>Documents</h2>
-  <div class="media-grid" id="document-gallery"></div>
-</section>
-
-  </main>  <footer>
-    <p>&copy; 2025 MediaSpace - Tous droits réservés</p>
-  </footer>  <script>
-    const images = ["media/images/solo.jpg", "media/images/image.jpg"];
-    const videos = ["media/videos/mp.mp4"];
-    const audios = ["media/audios/mano.mp3"];
-    const documents = [
-      "media/documents/doc.pdf",
-      "media/documents/presentation.pptx",
-      "media/documents/cv.docx",
-      "media/documents/data.xlsx",
-      "media/documents/note.txt",
-      "media/documents/archive.zip"
-    ];
-
-    function loadGallery(mediaArray, containerId, type) {
-      const container = document.getElementById(containerId);
-      container.innerHTML = "";
-      mediaArray.forEach(file => {
-        const div = document.createElement("div");
-        div.className = "media-item";
-
-        if (type === "image") {
-          div.innerHTML = `<img src="${file}" alt="media" loading="lazy">`;
-        } else if (type === "video") {
-          div.innerHTML = `<video controls src="${file}"></video>`;
-        } else if (type === "audio") {
-          div.innerHTML = `<audio controls src="${file}"></audio>`;
-        } else if (type === "document") {
-          const ext = file.split('.').pop();
-          const name = file.split('/').pop();
-          div.innerHTML = `
-            <div class="doc-box">
-              <div class="doc-icon">${ext.toUpperCase()}</div>
-              <p class="doc-name">${name}</p>
-              <a class="download-btn" href="${file}" download>Télécharger</a>
-            </div>
-          `;
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MediaSpace - Affichage de fichiers multimédia</title>
+    <style>
+        /* Style global */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+            transition: background-color 0.3s;
         }
 
-        container.appendChild(div);
-      });
-    }
+        /* Mode sombre */
+        body.dark-mode {
+            background-color: #121212;
+            color: #fff;
+        }
 
-    loadGallery(images, "image-gallery", "image");
-    loadGallery(videos, "video-gallery", "video");
-    loadGallery(audios, "audio-gallery", "audio");
-    loadGallery(documents, "document-gallery", "document");
+        header {
+            background-color: #333;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
 
-    document.getElementById("toggle-theme").onclick = () => {
-      document.body.classList.toggle("dark-mode");
-    };
-  </script></body>
+        header nav button {
+            background-color: transparent;
+            color: white;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        /* Section de filtres */
+        #filters {
+            margin: 20px;
+            padding: 10px;
+            text-align: center;
+        }
+
+        #filters button {
+            padding: 10px 20px;
+            margin: 5px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        #filters button:hover {
+            background-color: #0056b3;
+        }
+
+        /* Média en bloc */
+        #media-block {
+            padding: 20px;
+        }
+
+        .mediaItem {
+            background-color: #fff;
+            border-radius: 8px;
+            padding: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .mediaItem:hover {
+            transform: scale(1.05);
+        }
+
+        .mediaItem img,
+        .mediaItem video,
+        .mediaItem audio {
+            max-width: 100%;
+            border-radius: 5px;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        /* Style pour les boutons mode sombre */
+        .dark-mode-button {
+            background-color: #333;
+            color: white;
+            padding: 10px;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+
+        .dark-mode-button:hover {
+            background-color: #444;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <h1>MediaSpace - Affichage de fichiers multimédia</h1>
+    </header>
+
+    <!-- Bouton pour changer le mode sombre -->
+    <button class="dark-mode-button" onclick="toggleDarkMode()">Activer/Désactiver Mode Sombre</button>
+
+    <!-- Filtres (facultatifs) -->
+    <div id="filters">
+        <button onclick="filterMedia('image')">Images</button>
+        <button onclick="filterMedia('audio')">Audio</button>
+        <button onclick="filterMedia('video')">Vidéos</button>
+        <button onclick="filterMedia('pdf')">PDF</button>
+        <button onclick="showAllMedia()">Afficher Tout</button>
+    </div>
+
+    <!-- Section des fichiers multimédia -->
+    <div id="media-block">
+
+        <!-- Image solo.jpg -->
+        <div class="mediaItem" id="image">
+            <h3>Image: solo.jpg</h3>
+            <img src="media/images/solo.jpg" alt="Image solo" />
+        </div>
+
+        <!-- Image image.jpg -->
+        <div class="mediaItem" id="image">
+            <h3>Image: image.jpg</h3>
+            <img src="media/images/image.jpg" alt="Image image" />
+        </div>
+
+        <!-- Vidéo mp4 -->
+        <div class="mediaItem" id="video">
+            <h3>Vidéo: mp.mp4</h3>
+            <video controls>
+                <source src="media/videos/mp.mp4" type="video/mp4">
+                Votre navigateur ne prend pas en charge la lecture des vidéos.
+            </video>
+        </div>
+
+        <!-- Fichier Audio mano.mp3 -->
+        <div class="mediaItem" id="audio">
+            <h3>Audio: mano.mp3</h3>
+            <audio controls>
+                <source src="media/audios/mano.mp3" type="audio/mp3">
+                Votre navigateur ne prend pas en charge la lecture des audios.
+            </audio>
+        </div>
+
+        <!-- Fichier PDF doc.pdf -->
+        <div class="mediaItem" id="pdf">
+            <h3>Document PDF: doc.pdf</h3>
+            <a href="media/docs/doc.pdf" target="_blank">Télécharger le PDF</a>
+        </div>
+
+    </div>
+
+    <script>
+        // Fonction pour activer/désactiver le mode sombre
+        function toggleDarkMode() {
+            document.body.classList.toggle("dark-mode");
+        }
+
+        // Fonction pour afficher uniquement un type de média
+        function filterMedia(type) {
+            var mediaItems = document.querySelectorAll(".mediaItem");
+            mediaItems.forEach(function (item) {
+                if (item.id === type) {
+                    item.style.display = "block"; // Afficher l'élément
+                } else {
+                    item.style.display = "none"; // Masquer l'élément
+                }
+            });
+        }
+
+        // Fonction pour afficher tous les médias
+        function showAllMedia() {
+            var mediaItems = document.querySelectorAll(".mediaItem");
+            mediaItems.forEach(function (item) {
+                item.style.display = "block";
+            });
+        }
+
+        // Par défaut, afficher tous les médias au chargement de la page
+        window.onload = showAllMedia;
+    </script>
+
+</body>
+
 </html>
