@@ -3,208 +3,189 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>MediaSpace</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+  <title>MediaSpace | Mes Fichiers</title>
+  <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/833/833472.png" />
   <style>
-    * {
-      box-sizing: border-box;
-    }
-
     body {
       margin: 0;
-      font-family: 'Inter', sans-serif;
-      background: #f4f6f9;
-      color: #222;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #121212;
+      color: #f0f0f0;
       transition: background 0.3s, color 0.3s;
     }
-
     header {
-      background-color: #1f2937;
-      color: #fff;
-      padding: 30px 20px;
-      text-align: center;
-      position: relative;
+      background: #1f1f1f;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
-
     header h1 {
       margin: 0;
-      font-size: 2.2rem;
-      letter-spacing: 1px;
+      font-size: 1.5rem;
     }
-
-    .toggle-dark {
-      position: absolute;
-      top: 20px;
-      right: 20px;
-      background: #374151;
-      color: #fff;
+    .search-theme {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+    }
+    input[type="text"] {
+      padding: 0.5rem;
+      border-radius: 6px;
       border: none;
-      padding: 10px 16px;
+      outline: none;
+      background: #2c2c2c;
+      color: #f0f0f0;
+    }
+    button {
+      background: #333;
+      border: none;
+      color: #fff;
+      padding: 0.4rem 0.8rem;
       border-radius: 6px;
       cursor: pointer;
-      font-weight: bold;
     }
-
-    .toggle-dark:hover {
-      background: #4b5563;
+    section {
+      margin: 2rem;
     }
-
-    .controls {
-      display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
-      gap: 12px;
-      margin: 25px;
+    h2 {
+      border-bottom: 1px solid #444;
+      padding-bottom: 0.5rem;
+      margin-bottom: 1rem;
     }
-
-    .controls button {
-      padding: 10px 18px;
-      background-color: #2563eb;
-      color: white;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      font-weight: 600;
-      transition: background 0.3s;
-    }
-
-    .controls button:hover {
-      background-color: #1e40af;
-    }
-
     .media-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 24px;
-      padding: 20px;
-      max-width: 1200px;
-      margin: auto;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 1.5rem;
     }
-
-    .media-card {
-      background: white;
+    .media-item {
+      background: #1e1e1e;
       border-radius: 12px;
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
-      padding: 16px;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      transition: transform 0.3s ease, box-shadow 0.3s;
+      overflow: hidden;
+      padding: 1rem;
+      transition: transform 0.2s, box-shadow 0.2s;
     }
-
-    .media-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.1);
+    .media-item:hover {
+      transform: scale(1.03);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.4);
     }
-
-    .media-card h3 {
-      margin: 0;
-      font-size: 1.1rem;
-      color: #111827;
-    }
-
-    .media-card img,
-    .media-card video {
+    .media-item img,
+    .media-item video {
       width: 100%;
-      border-radius: 10px;
+      border-radius: 8px;
     }
-
-    .media-card audio {
+    .media-item audio,
+    .media-item iframe {
       width: 100%;
+      margin-top: 0.5rem;
     }
-
-    .media-card a {
-      text-decoration: none;
-      color: #2563eb;
-      font-weight: 600;
+    footer {
+      text-align: center;
+      padding: 1rem;
+      background: #1f1f1f;
+      color: #aaa;
+      margin-top: 2rem;
     }
+    .hidden { display: none; }
 
-    .dark-mode {
-      background-color: #111827;
-      color: #f9fafb;
+    /* Light mode */
+    body.light {
+      background-color: #f5f5f5;
+      color: #111;
     }
-
-    .dark-mode header {
-      background-color: #000;
+    body.light header, body.light footer {
+      background: #e0e0e0;
+      color: #111;
     }
-
-    .dark-mode .media-card {
-      background-color: #1f2937;
-      color: #f3f4f6;
+    body.light .media-item {
+      background: #fff;
     }
-
-    .dark-mode .controls button {
-      background-color: #4b5563;
+    body.light input[type="text"] {
+      background: #ddd;
+      color: #000;
     }
-
-    .dark-mode .controls button:hover {
-      background-color: #6b7280;
-    }
-
-    .dark-mode .media-card a {
-      color: #60a5fa;
+    body.light button {
+      background: #ccc;
+      color: #000;
     }
   </style>
 </head>
 <body>
   <header>
     <h1>MediaSpace</h1>
-    <button class="toggle-dark" onclick="toggleDarkMode()">Mode Sombre</button>
+    <div class="search-theme">
+      <input type="text" id="search" placeholder="Rechercher un fichier..." />
+      <button onclick="toggleTheme()">Changer de thème</button>
+    </div>
   </header>
 
-  <div class="controls">
-    <button onclick="filterMedia('image')">Images</button>
-    <button onclick="filterMedia('audio')">Audios</button>
-    <button onclick="filterMedia('video')">Vidéos</button>
-    <button onclick="filterMedia('pdf')">PDF</button>
-    <button onclick="filterMedia('all')">Afficher Tout</button>
-  </div>
+  <main>
+    <section id="images">
+      <h2>Images</h2>
+      <div class="media-grid">
+        <div class="media-item" data-name="solo">
+          <img src="media/images/solo.jpg" alt="solo">
+          <p>solo.jpg</p>
+        </div>
+        <div class="media-item" data-name="image">
+          <img src="media/images/image.jpg" alt="image">
+          <p>image.jpg</p>
+        </div>
+      </div>
+    </section>
 
-  <div class="media-grid">
-    <div class="media-card" data-type="image">
-      <h3>solo.jpg</h3>
-      <img src="media/images/solo.jpg" alt="solo" />
-    </div>
+    <section id="videos">
+      <h2>Vidéos</h2>
+      <div class="media-grid">
+        <div class="media-item" data-name="mp">
+          <video controls>
+            <source src="media/videos/mp.mp4" type="video/mp4">
+            Votre navigateur ne supporte pas la vidéo.
+          </video>
+          <p>mp.mp4</p>
+        </div>
+      </div>
+    </section>
 
-    <div class="media-card" data-type="image">
-      <h3>image.jpg</h3>
-      <img src="media/images/image.jpg" alt="image" />
-    </div>
+    <section id="audios">
+      <h2>Audios</h2>
+      <div class="media-grid">
+        <div class="media-item" data-name="mano">
+          <p>mano.mp3</p>
+          <audio controls>
+            <source src="media/audios/mano.mp3" type="audio/mpeg">
+            Votre navigateur ne supporte pas l'audio.
+          </audio>
+        </div>
+      </div>
+    </section>
 
-    <div class="media-card" data-type="video">
-      <h3>mp.mp4</h3>
-      <video controls>
-        <source src="media/videos/mp.mp4" type="video/mp4" />
-      </video>
-    </div>
+    <section id="docs">
+      <h2>Documents</h2>
+      <div class="media-grid">
+        <div class="media-item" data-name="doc">
+          <p>doc.pdf</p>
+          <iframe src="media/docs/doc.pdf" height="300"></iframe>
+        </div>
+      </div>
+    </section>
+  </main>
 
-    <div class="media-card" data-type="audio">
-      <h3>mano.mp3</h3>
-      <audio controls>
-        <source src="media/audios/mano.mp3" type="audio/mp3" />
-      </audio>
-    </div>
-
-    <div class="media-card" data-type="pdf">
-      <h3>doc.pdf</h3>
-      <a href="media/docs/doc.pdf" target="_blank">Ouvrir le document PDF</a>
-    </div>
-  </div>
+  <footer>
+    MediaSpace – By Hugues
+  </footer>
 
   <script>
-    function toggleDarkMode() {
-      document.body.classList.toggle('dark-mode');
-    }
-
-    function filterMedia(type) {
-      const cards = document.querySelectorAll('.media-card');
-      cards.forEach(card => {
-        if (type === 'all' || card.getAttribute('data-type') === type) {
-          card.style.display = 'flex';
-        } else {
-          card.style.display = 'none';
-        }
+    const searchInput = document.getElementById("search");
+    searchInput.addEventListener("input", () => {
+      const term = searchInput.value.toLowerCase();
+      document.querySelectorAll(".media-item").forEach(item => {
+        item.classList.toggle("hidden", !item.dataset.name.toLowerCase().includes(term));
       });
+    });
+
+    function toggleTheme() {
+      document.body.classList.toggle("light");
     }
   </script>
 </body>
