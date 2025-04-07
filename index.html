@@ -11,6 +11,11 @@
       font-family: 'Segoe UI', sans-serif;
       background-color: #121212;
       color: #f0f0f0;
+      transition: background-color 0.3s ease;
+    }
+    body.light {
+      background-color: #f4f4f4;
+      color: #333;
     }
     header {
       background: #1f1f1f;
@@ -19,12 +24,20 @@
       justify-content: space-between;
       align-items: center;
     }
+    header.light {
+      background: #f4f4f4;
+      color: #333;
+    }
     input[type="text"] {
       padding: 0.5rem;
       background: #2c2c2c;
       border: none;
       border-radius: 6px;
       color: #f0f0f0;
+    }
+    input[type="text"].light {
+      background: #ddd;
+      color: #333;
     }
     button {
       margin-left: 1rem;
@@ -34,6 +47,9 @@
       border: none;
       border-radius: 6px;
       cursor: pointer;
+    }
+    button.light {
+      background: #888;
     }
     section {
       margin: 2rem;
@@ -59,14 +75,13 @@
     .card:hover {
       transform: scale(1.02);
     }
-    .card img, .card video {
+    .card img, .card video, .card audio, .card iframe {
       width: 100%;
       border-radius: 8px;
       max-height: 200px;
       object-fit: cover;
     }
     .card audio, .card iframe {
-      width: 100%;
       margin-top: 0.5rem;
     }
     footer {
@@ -74,6 +89,10 @@
       padding: 1rem;
       background: #1f1f1f;
       color: #aaa;
+    }
+    footer.light {
+      background: #f4f4f4;
+      color: #333;
     }
   </style>
 </head>
@@ -112,10 +131,10 @@
 
   <script>
     const files = {
-      images: ['image.jpg', 'solo.jpg'], // Ajoute ici d'autres fichiers image si tu veux
-      videos: ['mp.mp4'],
-      audios: ['mano.mp3', 'autre.m4a'],
-      docs: ['doc.pdf', 'exemple.txt']
+      images: ['image1.jpg', 'solo.jpg'], // Ajoute tes fichiers image ici
+      videos: ['mp.mp4'], // Ajoute tes vidéos ici
+      audios: ['mano.mp3', 'autre.m4a'], // Ajoute tes audios ici
+      docs: ['doc.pdf', 'exemple.txt'] // Ajoute tes documents ici
     };
 
     function createCard(type, fileName) {
@@ -152,9 +171,13 @@
       });
     });
 
-    // Thème clair/sombre
+    // Changer de thème
     function toggleTheme() {
       document.body.classList.toggle("light");
+      document.querySelector("header").classList.toggle("light");
+      document.querySelector("footer").classList.toggle("light");
+      document.querySelector("input[type='text']").classList.toggle("light");
+      document.querySelector("button").classList.toggle("light");
     }
   </script>
 </body>
