@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>MediaSpace | Mes Fichiers</title>
+  <title>MediaSpace</title>
   <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/833/833472.png" />
   <style>
     body {
@@ -11,7 +11,6 @@
       font-family: 'Segoe UI', sans-serif;
       background-color: #121212;
       color: #f0f0f0;
-      transition: background 0.3s, color 0.3s;
     }
     header {
       background: #1f1f1f;
@@ -20,28 +19,19 @@
       justify-content: space-between;
       align-items: center;
     }
-    header h1 {
-      margin: 0;
-      font-size: 1.5rem;
-    }
-    .search-theme {
-      display: flex;
-      gap: 1rem;
-      align-items: center;
-    }
     input[type="text"] {
       padding: 0.5rem;
-      border-radius: 6px;
-      border: none;
-      outline: none;
       background: #2c2c2c;
+      border: none;
+      border-radius: 6px;
       color: #f0f0f0;
     }
     button {
+      margin-left: 1rem;
+      padding: 0.5rem 1rem;
       background: #333;
+      color: white;
       border: none;
-      color: #fff;
-      padding: 0.4rem 0.8rem;
       border-radius: 6px;
       cursor: pointer;
     }
@@ -49,33 +39,33 @@
       margin: 2rem;
     }
     h2 {
+      margin-bottom: 1rem;
       border-bottom: 1px solid #444;
       padding-bottom: 0.5rem;
-      margin-bottom: 1rem;
     }
-    .media-grid {
+    .grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
       gap: 1.5rem;
     }
-    .media-item {
+    .card {
       background: #1e1e1e;
-      border-radius: 12px;
-      overflow: hidden;
       padding: 1rem;
-      transition: transform 0.2s, box-shadow 0.2s;
+      border-radius: 12px;
+      text-align: center;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+      transition: transform 0.2s;
     }
-    .media-item:hover {
-      transform: scale(1.03);
-      box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+    .card:hover {
+      transform: scale(1.02);
     }
-    .media-item img,
-    .media-item video {
+    .card img, .card video {
       width: 100%;
       border-radius: 8px;
+      max-height: 200px;
+      object-fit: cover;
     }
-    .media-item audio,
-    .media-item iframe {
+    .card audio, .card iframe {
       width: 100%;
       margin-top: 0.5rem;
     }
@@ -84,106 +74,85 @@
       padding: 1rem;
       background: #1f1f1f;
       color: #aaa;
-      margin-top: 2rem;
-    }
-    .hidden { display: none; }
-
-    /* Light mode */
-    body.light {
-      background-color: #f5f5f5;
-      color: #111;
-    }
-    body.light header, body.light footer {
-      background: #e0e0e0;
-      color: #111;
-    }
-    body.light .media-item {
-      background: #fff;
-    }
-    body.light input[type="text"] {
-      background: #ddd;
-      color: #000;
-    }
-    body.light button {
-      background: #ccc;
-      color: #000;
     }
   </style>
 </head>
 <body>
   <header>
     <h1>MediaSpace</h1>
-    <div class="search-theme">
+    <div>
       <input type="text" id="search" placeholder="Rechercher un fichier..." />
-      <button onclick="toggleTheme()">Changer de thème</button>
+      <button onclick="toggleTheme()">Thème</button>
     </div>
   </header>
 
-  <main>
-    <section id="images">
-      <h2>Images</h2>
-      <div class="media-grid">
-        <div class="media-item" data-name="solo">
-          <img src="media/images/solo.jpg" alt="solo">
-          <p>solo.jpg</p>
-        </div>
-        <div class="media-item" data-name="image">
-          <img src="media/images/image.jpg" alt="image">
-          <p>image.jpg</p>
-        </div>
-      </div>
-    </section>
+  <section>
+    <h2>Images</h2>
+    <div class="grid" id="images"></div>
+  </section>
 
-    <section id="videos">
-      <h2>Vidéos</h2>
-      <div class="media-grid">
-        <div class="media-item" data-name="mp">
-          <video controls>
-            <source src="media/videos/mp.mp4" type="video/mp4">
-            Votre navigateur ne supporte pas la vidéo.
-          </video>
-          <p>mp.mp4</p>
-        </div>
-      </div>
-    </section>
+  <section>
+    <h2>Vidéos</h2>
+    <div class="grid" id="videos"></div>
+  </section>
 
-    <section id="audios">
-      <h2>Audios</h2>
-      <div class="media-grid">
-        <div class="media-item" data-name="mano">
-          <p>mano.mp3</p>
-          <audio controls>
-            <source src="media/audios/mano.mp3" type="audio/mpeg">
-            Votre navigateur ne supporte pas l'audio.
-          </audio>
-        </div>
-      </div>
-    </section>
+  <section>
+    <h2>Audios</h2>
+    <div class="grid" id="audios"></div>
+  </section>
 
-    <section id="docs">
-      <h2>Documents</h2>
-      <div class="media-grid">
-        <div class="media-item" data-name="doc">
-          <p>doc.pdf</p>
-          <iframe src="media/docs/doc.pdf" height="300"></iframe>
-        </div>
-      </div>
-    </section>
-  </main>
+  <section>
+    <h2>Documents</h2>
+    <div class="grid" id="docs"></div>
+  </section>
 
   <footer>
-    MediaSpace – By Hugues
+    &copy; 2025 - MediaSpace by Hugues
   </footer>
 
   <script>
-    const searchInput = document.getElementById("search");
-    searchInput.addEventListener("input", () => {
-      const term = searchInput.value.toLowerCase();
-      document.querySelectorAll(".media-item").forEach(item => {
-        item.classList.toggle("hidden", !item.dataset.name.toLowerCase().includes(term));
+    const files = {
+      images: ['image.jpg', 'solo.jpg'], // Ajoute ici d'autres fichiers image si tu veux
+      videos: ['mp.mp4'],
+      audios: ['mano.mp3', 'autre.m4a'],
+      docs: ['doc.pdf', 'exemple.txt']
+    };
+
+    function createCard(type, fileName) {
+      const ext = fileName.split('.').pop().toLowerCase();
+      const path = `media/${type}/${fileName}`;
+      let content = '';
+
+      if (type === 'images') {
+        content = `<img src="${path}" alt="${fileName}" /><p>${fileName}</p>`;
+      } else if (type === 'videos') {
+        content = `<video controls><source src="${path}" type="video/${ext}"></video><p>${fileName}</p>`;
+      } else if (type === 'audios') {
+        content = `<audio controls><source src="${path}" type="audio/${ext}"></audio><p>${fileName}</p>`;
+      } else if (type === 'docs') {
+        content = `<iframe src="${path}" height="250"></iframe><p>${fileName}</p>`;
+      }
+
+      const div = document.createElement('div');
+      div.className = 'card';
+      div.dataset.name = fileName.toLowerCase();
+      div.innerHTML = content;
+      document.getElementById(type).appendChild(div);
+    }
+
+    for (const type in files) {
+      files[type].forEach(file => createCard(type, file));
+    }
+
+    // Recherche
+    document.getElementById("search").addEventListener("input", (e) => {
+      const value = e.target.value.toLowerCase();
+      document.querySelectorAll(".card").forEach(card => {
+        card.style.display = card.dataset.name.includes(value) ? "block" : "none";
       });
     });
 
+    // Thème clair/sombre
     function toggleTheme() {
       document.body.classList.toggle("light");
     }
