@@ -1,205 +1,211 @@
 <!DOCTYPE html>
 <html lang="fr">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MediaSpace - Affichage de fichiers multimédia</title>
-    <style>
-        /* Style global */
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f5f5f5;
-            transition: background-color 0.3s;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MediaSpace</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    * {
+      box-sizing: border-box;
+    }
 
-        /* Mode sombre */
-        body.dark-mode {
-            background-color: #121212;
-            color: #fff;
-        }
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background: #f4f6f9;
+      color: #222;
+      transition: background 0.3s, color 0.3s;
+    }
 
-        header {
-            background-color: #333;
-            color: white;
-            padding: 20px;
-            text-align: center;
-        }
+    header {
+      background-color: #1f2937;
+      color: #fff;
+      padding: 30px 20px;
+      text-align: center;
+      position: relative;
+    }
 
-        header nav button {
-            background-color: transparent;
-            color: white;
-            border: none;
-            font-size: 20px;
-            cursor: pointer;
-        }
+    header h1 {
+      margin: 0;
+      font-size: 2.2rem;
+      letter-spacing: 1px;
+    }
 
-        /* Section de filtres */
-        #filters {
-            margin: 20px;
-            padding: 10px;
-            text-align: center;
-        }
+    .toggle-dark {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: #374151;
+      color: #fff;
+      border: none;
+      padding: 10px 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+    }
 
-        #filters button {
-            padding: 10px 20px;
-            margin: 5px;
-            background-color: #007BFF;
-            color: white;
-            border: none;
-            cursor: pointer;
-        }
+    .toggle-dark:hover {
+      background: #4b5563;
+    }
 
-        #filters button:hover {
-            background-color: #0056b3;
-        }
+    .controls {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin: 25px;
+    }
 
-        /* Média en bloc */
-        #media-block {
-            padding: 20px;
-        }
+    .controls button {
+      padding: 10px 18px;
+      background-color: #2563eb;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: background 0.3s;
+    }
 
-        .mediaItem {
-            background-color: #fff;
-            border-radius: 8px;
-            padding: 10px;
-            margin-bottom: 20px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease;
-        }
+    .controls button:hover {
+      background-color: #1e40af;
+    }
 
-        .mediaItem:hover {
-            transform: scale(1.05);
-        }
+    .media-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+      padding: 20px;
+      max-width: 1200px;
+      margin: auto;
+    }
 
-        .mediaItem img,
-        .mediaItem video,
-        .mediaItem audio {
-            max-width: 100%;
-            border-radius: 5px;
-        }
+    .media-card {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      transition: transform 0.3s ease, box-shadow 0.3s;
+    }
 
-        /* Animations */
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
+    .media-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.1);
+    }
 
-            to {
-                opacity: 1;
-            }
-        }
+    .media-card h3 {
+      margin: 0;
+      font-size: 1.1rem;
+      color: #111827;
+    }
 
-        /* Style pour les boutons mode sombre */
-        .dark-mode-button {
-            background-color: #333;
-            color: white;
-            padding: 10px;
-            border: none;
-            cursor: pointer;
-            font-size: 16px;
-            position: absolute;
-            top: 10px;
-            right: 10px;
-        }
+    .media-card img,
+    .media-card video {
+      width: 100%;
+      border-radius: 10px;
+    }
 
-        .dark-mode-button:hover {
-            background-color: #444;
-        }
-    </style>
+    .media-card audio {
+      width: 100%;
+    }
+
+    .media-card a {
+      text-decoration: none;
+      color: #2563eb;
+      font-weight: 600;
+    }
+
+    .dark-mode {
+      background-color: #111827;
+      color: #f9fafb;
+    }
+
+    .dark-mode header {
+      background-color: #000;
+    }
+
+    .dark-mode .media-card {
+      background-color: #1f2937;
+      color: #f3f4f6;
+    }
+
+    .dark-mode .controls button {
+      background-color: #4b5563;
+    }
+
+    .dark-mode .controls button:hover {
+      background-color: #6b7280;
+    }
+
+    .dark-mode .media-card a {
+      color: #60a5fa;
+    }
+  </style>
 </head>
-
 <body>
+  <header>
+    <h1>MediaSpace</h1>
+    <button class="toggle-dark" onclick="toggleDarkMode()">Mode Sombre</button>
+  </header>
 
-    <header>
-        <h1>MediaSpace - Affichage de fichiers multimédia</h1>
-    </header>
+  <div class="controls">
+    <button onclick="filterMedia('image')">Images</button>
+    <button onclick="filterMedia('audio')">Audios</button>
+    <button onclick="filterMedia('video')">Vidéos</button>
+    <button onclick="filterMedia('pdf')">PDF</button>
+    <button onclick="filterMedia('all')">Afficher Tout</button>
+  </div>
 
-    <!-- Bouton pour changer le mode sombre -->
-    <button class="dark-mode-button" onclick="toggleDarkMode()">Activer/Désactiver Mode Sombre</button>
-
-    <!-- Filtres (facultatifs) -->
-    <div id="filters">
-        <button onclick="filterMedia('image')">Images</button>
-        <button onclick="filterMedia('audio')">Audio</button>
-        <button onclick="filterMedia('video')">Vidéos</button>
-        <button onclick="filterMedia('pdf')">PDF</button>
-        <button onclick="showAllMedia()">Afficher Tout</button>
+  <div class="media-grid">
+    <div class="media-card" data-type="image">
+      <h3>solo.jpg</h3>
+      <img src="media/images/solo.jpg" alt="solo" />
     </div>
 
-    <!-- Section des fichiers multimédia -->
-    <div id="media-block">
-
-        <!-- Image solo.jpg -->
-        <div class="mediaItem" id="image">
-            <h3>Image: solo.jpg</h3>
-            <img src="media/images/solo.jpg" alt="Image solo" />
-        </div>
-
-        <!-- Image image.jpg -->
-        <div class="mediaItem" id="image">
-            <h3>Image: image.jpg</h3>
-            <img src="media/images/image.jpg" alt="Image image" />
-        </div>
-
-        <!-- Vidéo mp4 -->
-        <div class="mediaItem" id="video">
-            <h3>Vidéo: mp.mp4</h3>
-            <video controls>
-                <source src="media/videos/mp.mp4" type="video/mp4">
-                Votre navigateur ne prend pas en charge la lecture des vidéos.
-            </video>
-        </div>
-
-        <!-- Fichier Audio mano.mp3 -->
-        <div class="mediaItem" id="audio">
-            <h3>Audio: mano.mp3</h3>
-            <audio controls>
-                <source src="media/audios/mano.mp3" type="audio/mp3">
-                Votre navigateur ne prend pas en charge la lecture des audios.
-            </audio>
-        </div>
-
-        <!-- Fichier PDF doc.pdf -->
-        <div class="mediaItem" id="pdf">
-            <h3>Document PDF: doc.pdf</h3>
-            <a href="media/docs/doc.pdf" target="_blank">Télécharger le PDF</a>
-        </div>
-
+    <div class="media-card" data-type="image">
+      <h3>image.jpg</h3>
+      <img src="media/images/image.jpg" alt="image" />
     </div>
 
-    <script>
-        // Fonction pour activer/désactiver le mode sombre
-        function toggleDarkMode() {
-            document.body.classList.toggle("dark-mode");
+    <div class="media-card" data-type="video">
+      <h3>mp.mp4</h3>
+      <video controls>
+        <source src="media/videos/mp.mp4" type="video/mp4" />
+      </video>
+    </div>
+
+    <div class="media-card" data-type="audio">
+      <h3>mano.mp3</h3>
+      <audio controls>
+        <source src="media/audios/mano.mp3" type="audio/mp3" />
+      </audio>
+    </div>
+
+    <div class="media-card" data-type="pdf">
+      <h3>doc.pdf</h3>
+      <a href="media/docs/doc.pdf" target="_blank">Ouvrir le document PDF</a>
+    </div>
+  </div>
+
+  <script>
+    function toggleDarkMode() {
+      document.body.classList.toggle('dark-mode');
+    }
+
+    function filterMedia(type) {
+      const cards = document.querySelectorAll('.media-card');
+      cards.forEach(card => {
+        if (type === 'all' || card.getAttribute('data-type') === type) {
+          card.style.display = 'flex';
+        } else {
+          card.style.display = 'none';
         }
-
-        // Fonction pour afficher uniquement un type de média
-        function filterMedia(type) {
-            var mediaItems = document.querySelectorAll(".mediaItem");
-            mediaItems.forEach(function (item) {
-                if (item.id === type) {
-                    item.style.display = "block"; // Afficher l'élément
-                } else {
-                    item.style.display = "none"; // Masquer l'élément
-                }
-            });
-        }
-
-        // Fonction pour afficher tous les médias
-        function showAllMedia() {
-            var mediaItems = document.querySelectorAll(".mediaItem");
-            mediaItems.forEach(function (item) {
-                item.style.display = "block";
-            });
-        }
-
-        // Par défaut, afficher tous les médias au chargement de la page
-        window.onload = showAllMedia;
-    </script>
-
+      });
+    }
+  </script>
 </body>
-
 </html>
